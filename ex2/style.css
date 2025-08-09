@@ -1,0 +1,191 @@
+body {
+  margin: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill="%23111"/></svg>') center/10px,
+    radial-gradient(#000000, #121212);
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
+
+.ambient-lighting {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255,0,0,0.1) 0%, transparent 80%);
+  z-index: 1;
+}
+
+.floating-sparks {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.f1-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 30px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+.team-logo {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  opacity: 0.2;
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: float 6s ease-in-out infinite;
+}
+
+.car-3d-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.car-3d {
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  animation: spin 20s linear infinite;
+  cursor: pointer;
+}
+
+.car-3d:hover {
+  animation-play-state: paused;
+  transform: scale(1.1) rotateY(0deg);
+}
+
+.driver-card {
+  background: rgba(20, 20, 20, 0.8);
+  border: 2px solid;
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  max-width: 350px;
+  transition: transform 0.3s ease;
+}
+
+.driver-card:hover {
+  transform: translateY(-10px);
+}
+
+.driver-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid;
+  margin-bottom: 20px;
+}
+
+.stat-bar {
+  margin: 15px 0;
+  text-align: left;
+}
+
+.bar {
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: currentColor;
+  width: 0;
+  animation: fillBar 1s ease forwards;
+}
+
+/* Team-specific styles */
+.redbull {
+  --team-color: #0600EF;
+  border-color: var(--team-color);
+}
+
+.ferrari {
+  --team-color: #DC0000;
+  border-color: var(--team-color);
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background: #1a1a1a;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  border: 1px solid var(--team-color);
+}
+
+.close-modal {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes fillBar {
+  to { width: var(--fill-percentage); }
+}
+
+@media (max-width: 768px) {
+  .f1-section {
+    padding: 20px;
+  }
+  
+  .car-3d-container {
+    max-width: 100%;
+    height: 200px;
+  }
+  
+  .driver-card {
+    padding: 20px;
+  }
+}

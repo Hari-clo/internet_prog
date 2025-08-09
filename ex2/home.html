@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Supercar Covers</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #cart { border: 2px dashed #444; padding: 10px; min-height: 50px; margin-top: 10px; }
+    .product { width: 100px; cursor: grab; margin: 10px; display: inline-block; }
+    .form-group { margin: 10px 0; }
+    iframe { width: 100%; height: 250px; border: none; }
+    .media-box { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1> Welcome to Supercar Covers</h1>
+
+  <h2>Click on logo</h2>
+  <img src="lo.jpeg" alt="Products" usemap="#productmap" width="100">
+  <map name="productmap">
+    <area shape="rect" coords="10,10,180,180" alt="Phone" href="https://www.mercedes-benz.com/en/">
+    <area shape="rect" coords="200,10,390,180" alt="Laptop" href="https://www.mercedes-benz.com/en/">
+  </map>
+
+  <h2>Drag Products to Cart</h2>
+  <div class="product" id="n" draggable="true" ondragstart="drag(event)">Nylon cover</div>
+  <div class="product" id="nw" draggable="true" ondragstart="drag(event)">Nylon cover (waterproof)</div>
+
+  <div id="cart" ondrop="drop(event)" ondragover="allowDrop(event)"> Drop here to add to cart</div>
+
+  <div class="media-box">
+    <h2>Product Preview - Laptop</h2>
+    <img src="1.jpeg" alt="nylon cover Image" width="200">
+    <video width="300" controls>
+      <source src="11.mp4"type="video/mp4">
+      Your browser does not support video.
+    </video>
+      <audio width="300" controls>
+      <source src="D:\Front_end\ex2\308455.mp3"type="audio/mp3">
+      Your browser does not support audio.
+    </audio>
+  </div>
+
+  <h2> Shop Location MGR Bus Stand, Madurai</h2>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.623393172212!2d78.1181735748062!3d9.919627574184192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00c5840ad3f7b7%3A0xf76bc51409e4b918!2sPeriyar%20Bus%20Stand%2C%20Madurai!5e0!3m2!1sen!2sin!4v1691221351213!5m2!1sen!2sin"
+    allowfullscreen="">
+  </iframe>
+
+  <h2> Order Details</h2>
+  <form onsubmit="submitOrder(event)">
+    <div class="form-group">
+      Name: <input type="text" id="name" required>
+    </div>
+    <div class="form-group">
+      Address: <input type="text" id="address" required>
+    </div>
+    <div class="form-group">
+      Phone: <input type="tel" id="phoneInput" required>
+    </div>
+    <div class="form-group">
+      Products Added: <input type="text" id="products" readonly>
+    </div>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <p id="message" style="color:green;"></p>
+
+  <!-- JavaScript -->
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text");
+      const item = document.getElementById(data);
+      document.getElementById("cart").appendChild(item.cloneNode(true));
+
+      const productsInput = document.getElementById("products");
+      const existing = productsInput.value;
+      productsInput.value = existing ? existing + ", " + data : data;
+    }
+
+    function submitOrder(e) {
+      e.preventDefault();
+      document.getElementById("message").innerText = "Hurray! Your product is ordered.";
+    }
+  </script>
+
+</body>
+</html>
