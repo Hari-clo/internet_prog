@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Validation Exercises</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 500;
+      color: #444;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+    .error {
+      color: #d9534f;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+    .valid {
+      color: #28a745;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+    .terms {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
+    .terms input {
+      width: auto;
+      margin-right: 8px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Registration Form</h2>
+    <form id="validationForm" autocomplete="off" novalidate>
+      <label>Name:
+        <input type="text" id="name" name="name">
+        <span class="error" id="nameError"></span>
+      </label>
+      <label>Email:
+        <input type="text" id="email" name="email">
+        <span class="error" id="emailError"></span>
+      </label>
+      <label>Password:
+        <input type="password" id="password" name="password">
+        <span class="error" id="passwordError"></span>
+      </label>
+      <label>Confirm Password:
+        <input type="password" id="confirmPassword" name="confirmPassword">
+        <span class="error" id="confirmPasswordError"></span>
+      </label>
+      <label>Mobile Number:
+        <input type="text" id="mobile" name="mobile" maxlength="10">
+        <span class="error" id="mobileError"></span>
+      </label>
+      <label>Age:
+        <input type="text" id="age" name="age">
+        <span id="ageMsg"></span>
+      </label>
+      <div class="terms">
+        <input type="checkbox" id="terms" name="terms">
+        <label for="terms">I agree to the Terms & Conditions</label>
+      </div>
+      <span class="error" id="termsError"></span>
+      
+      <label>Country:
+        <select id="country" name="country">
+          <option value="">Select Country</option>
+          <option value="India">India</option>
+          <option value="USA">USA</option>
+          <option value="UK">UK</option>
+        </select>
+        <span class="error" id="countryError"></span>
+      </label>
+      <label>Date of Birth:
+        <input type="date" id="dob" name="dob">
+        <span class="error" id="dobError"></span>
+      </label>
+      <label>Username:
+        <input type="text" id="username" name="username">
+        <span class="error" id="usernameError"></span>
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    function isEmailValid(email) {
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+    }
+    function isPasswordStrong(password) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
+    }
+    function isMobileValid(mobile) {
+      return /^\d{10}$/.test(mobile);
+    }
+    function isAgeValid(age) {
+      return /^\d+$/.test(age) && +age >= 18 && +age <= 60;
+    }
+    function isUsernameValid(username) {
+      return /^[A-Za-z][A-Za-z0-9_]{4,}$/.test(username);
+    }
+    function isCountrySelected(country) {
+      return country !== "";
+    }
+    function isAtLeast18YearsOld(dob) {
+      if (!dob) return false;
+      const birthDate = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age >= 18;
+    }
+
+    document.getElementById('validationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+      document.getElementById('ageMsg').textContent = '';
+      document.getElementById('ageMsg').className = '';
+
+      let valid = true;
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const mobile = document.getElementById('mobile').value.trim();
+      const age = document.getElementById('age').value.trim();
+      const terms = document.getElementById('terms').checked;
+      const country = document.getElementById('country').value;
+      const dob = document.getElementById('dob').value;
+      const username = document.getElementById('username').value.trim();
+
+      if (!name) { document.getElementById('nameError').textContent = "Name is required."; valid = false; }
+      if (!email) { document.getElementById('emailError').textContent = "Email is required."; valid = false; }
+      if (!password) { document.getElementById('passwordError').textContent = "Password is required."; valid = false; }
+      if (!confirmPassword) { document.getElementById('confirmPasswordError').textContent = "Please confirm your password."; valid = false; }
+      if (!mobile) { document.getElementById('mobileError').textContent = "Mobile number is required."; valid = false; }
+      if (!age) { document.getElementById('ageMsg').textContent = "Age is required."; document.getElementById('ageMsg').className = "error"; valid = false; }
+      if (!dob) { document.getElementById('dobError').textContent = "Date of Birth is required."; valid = false; }
+      if (!username) { document.getElementById('usernameError').textContent = "Username is required."; valid = false; }
+
+      if (email && !isEmailValid(email)) { document.getElementById('emailError').textContent = "Invalid email format."; valid = false; }
+      if (password && !isPasswordStrong(password)) { document.getElementById('passwordError').textContent = "Password must include uppercase, lowercase, number, and special character."; valid = false; }
+      if (password && confirmPassword && password !== confirmPassword) { document.getElementById('confirmPasswordError').textContent = "Passwords do not match."; valid = false; }
+      if (mobile && !isMobileValid(mobile)) { document.getElementById('mobileError').textContent = "Mobile number must be exactly 10 digits."; valid = false; }
+      if (age) {
+        if (isAgeValid(age)) {
+          document.getElementById('ageMsg').textContent = "Valid age";
+          document.getElementById('ageMsg').className = "valid";
+        } else {
+          document.getElementById('ageMsg').textContent = "Invalid age";
+          document.getElementById('ageMsg').className = "error";
+          valid = false;
+        }
+      }
+      if (!terms) { document.getElementById('termsError').textContent = "You must agree to the Terms & Conditions."; valid = false; }
+      if (!isCountrySelected(country)) { document.getElementById('countryError').textContent = "Please select a country."; valid = false; }
+      if (dob && !isAtLeast18YearsOld(dob)) { document.getElementById('dobError').textContent = "You must be at least 18 years old."; valid = false; }
+      if (username && !isUsernameValid(username)) { document.getElementById('usernameError').textContent = "Username must start with a letter, be at least 5 characters, and contain only letters, numbers, and underscores."; valid = false; }
+
+      if (valid) {
+        alert("Form submitted successfully!");
+        this.reset();
+        document.getElementById('ageMsg').textContent = '';
+        document.getElementById('ageMsg').className = '';
+      } else {
+        const firstError = document.querySelector('.error:not(:empty)');
+        if (firstError) firstError.scrollIntoView({behavior: "smooth", block: "center"});
+      }
+    });
+  </script>
+</body>
+</html>
